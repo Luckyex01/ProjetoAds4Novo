@@ -68,7 +68,7 @@ export default function HomeScreen() {
         ]}
       >
         <Image
-          source={require('../../assets/images/logo LuckyFly.png')}
+          source={require('../../assets/images/logoLuckyFly.png')}
           style={styles.image}
         />
       </Animated.View>

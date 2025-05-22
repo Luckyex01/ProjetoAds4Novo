@@ -8,7 +8,7 @@ const AboutScreen = () => {
     <ScrollView contentContainerStyle={styles.container}>
       <View style={styles.imageContainer}>
         <Image 
-          source={require('../../../assets/images/logo LuckyFly.png')} 
+          source={require('../../../assets/images/logoLuckyFly.png')} 
           style={styles.image} 
         />
       </View>

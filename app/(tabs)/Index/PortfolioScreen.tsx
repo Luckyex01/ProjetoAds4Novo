@@ -7,16 +7,29 @@ import {
   FlatList,
   Modal,
   StyleSheet,
-  ScrollView
+  ScrollView,
 } from 'react-native';
 import { BlurView } from 'expo-blur';
+import * as Animatable from 'react-native-animatable';
+import { LinearGradient } from 'expo-linear-gradient';
 
-type FilterType = 'all' | 'facial' | 'corporal' | 'outros';
+// Definindo os tipos de filtro, agora com mais categorias
+type FilterType =
+  | 'all'
+  | 'facial'
+  | 'corporal'
+  | 'automotivo'
+  | 'academico'
+  | 'social'
+  | 'tecnologico'
+  | 'outros';
 
 const Portfolio = () => {
   const [activeFilter, setActiveFilter] = useState<FilterType>('all');
   const [isModalVisible, setIsModalVisible] = useState(false);
-  const [selectedDescription, setSelectedDescription] = useState<string | null>(null);
+  const [selectedDescription, setSelectedDescription] = useState<string | null>(
+    null
+  );
 
   const handleFilterChange = (filter: FilterType) => {
     setActiveFilter(filter);
@@ -32,6 +45,7 @@ const Portfolio = () => {
     setSelectedDescription(null);
   };
 
+  // Array de itens do portfolio com novas categorias e imagens placeholder (substitua conforme necessário)
   const portfolioItems = [
     {
       id: '1',
@@ -59,7 +73,8 @@ const Portfolio = () => {
       imgSrc: require('../../../assets/images/p4.png'),
       category: 'corporal',
       title: 'Podologia',
-      description: 'Tratamento de calos, unhas encravadas, reflexologia podal.',
+      description:
+        'Tratamento de calos, unhas encravadas, reflexologia podal.',
     },
     {
       id: '5',
@@ -73,14 +88,16 @@ const Portfolio = () => {
       imgSrc: require('../../../assets/images/p6.png'),
       category: 'outros',
       title: 'Consulta Médica Online',
-      description: 'Atendimento com médicos via telemedicina para diversas especialidades.',
+      description:
+        'Atendimento com médicos via telemedicina para diversas especialidades.',
     },
     {
       id: '7',
       imgSrc: require('../../../assets/images/p1.png'),
       category: 'outros',
       title: 'Exames Laboratoriais',
-      description: 'Coleta de sangue, testes clínicos e diagnóstico laboratorial.',
+      description:
+        'Coleta de sangue, testes clínicos e diagnóstico laboratorial.',
     },
     {
       id: '8',
@@ -98,72 +115,168 @@ const Portfolio = () => {
     },
     {
       id: '10',
+      // Reposicionando de "outros" para "automotivo"
       imgSrc: require('../../../assets/images/p4.png'),
-      category: 'outros',
+      category: 'automotivo',
       title: 'Serviços Automotivos',
-      description: 'Troca de óleo, revisão geral e lavagem especializada.',
+      description:
+        'Troca de óleo, revisão geral e lavagem especializada.',
     },
     {
       id: '11',
       imgSrc: require('../../../assets/images/p5.png'),
       category: 'outros',
       title: 'Reparos Residenciais',
-      description: 'Serviços de encanamento, elétrica e pequenos reparos.',
+      description:
+        'Serviços de encanamento, elétrica e pequenos reparos.',
+    },
+    // Novos itens para categorias adicionais:
+    {
+      id: '12',
+      imgSrc: { uri: 'https://via.placeholder.com/300x200?text=Automotivo+2' },
+      category: 'automotivo',
+      title: 'Revisão e Manutenção Automotiva',
+      description:
+        'Verificação completa, manutenção preventiva e reparos especializados.',
+    },
+    {
+      id: '13',
+      imgSrc: { uri: 'https://via.placeholder.com/300x200?text=Aulas+Particulares' },
+      category: 'academico',
+      title: 'Aulas Particulares',
+      description: 'Aulas de matemática, física, química e outras disciplinas.',
+    },
+    {
+      id: '14',
+      imgSrc: { uri: 'https://via.placeholder.com/300x200?text=Cursos+Online' },
+      category: 'academico',
+      title: 'Cursos Online',
+      description:
+        'Plataforma de ensino com cursos variados para aprimorar habilidades.',
+    },
+    {
+      id: '15',
+      imgSrc: { uri: 'https://via.placeholder.com/300x200?text=Social+Media+Management' },
+      category: 'social',
+      title: 'Social Media Management',
+      description:
+        'Gerenciamento de redes sociais e estratégias digitais eficazes.',
+    },
+    {
+      id: '16',
+      imgSrc: { uri: 'https://via.placeholder.com/300x200?text=Marketing+de+Influencia' },
+      category: 'social',
+      title: 'Marketing de Influência',
+      description:
+        'Promoção de marcas através de influenciadores e conteúdo digital.',
+    },
+    {
+      id: '17',
+      imgSrc: { uri: 'https://via.placeholder.com/300x200?text=Suporte+T%C3%A9cnico+TI' },
+      category: 'tecnologico',
+      title: 'Suporte Técnico de TI',
+      description:
+        'Manutenção de hardware, suporte em redes e assistência técnica especializada.',
+    },
+    {
+      id: '18',
+      imgSrc: { uri: 'https://via.placeholder.com/300x200?text=Desenvolvimento+Software' },
+      category: 'tecnologico',
+      title: 'Desenvolvimento de Software',
+      description:
+        'Criação de aplicativos, websites e sistemas personalizados para sua empresa.',
+    },
+    {
+      id: '19',
+      imgSrc: { uri: 'https://via.placeholder.com/300x200?text=Botox+Preenchimento' },
+      category: 'facial',
+      title: 'Tratamento Facial: Botox & Preenchimento',
+      description:
+        'Procedimentos estéticos para rejuvenescimento e realce dos traços faciais.',
     },
   ];
 
+  // Filtrar itens com base no filtro ativo
   const filteredItems = portfolioItems.filter(
     (item) => activeFilter === 'all' || item.category === activeFilter
   );
 
   return (
     <View style={styles.container}>
+      {/* Cabeçalho: título e opções de filtro */}
+      <View style={styles.header}>
+        <Text style={styles.heading}>Serviços</Text>
+        <View style={styles.filters}>
+          <TouchableOpacity
+            style={[styles.filterButton, activeFilter === 'all' && styles.activeFilter]}
+            onPress={() => handleFilterChange('all')}>
+            <Text style={styles.filterText}>Todos</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={[styles.filterButton, activeFilter === 'facial' && styles.activeFilter]}
+            onPress={() => handleFilterChange('facial')}>
+            <Text style={styles.filterText}>Faciais</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={[styles.filterButton, activeFilter === 'corporal' && styles.activeFilter]}
+            onPress={() => handleFilterChange('corporal')}>
+            <Text style={styles.filterText}>Corporais</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={[styles.filterButton, activeFilter === 'automotivo' && styles.activeFilter]}
+            onPress={() => handleFilterChange('automotivo')}>
+            <Text style={styles.filterText}>Automotivos</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={[styles.filterButton, activeFilter === 'academico' && styles.activeFilter]}
+            onPress={() => handleFilterChange('academico')}>
+            <Text style={styles.filterText}>Acadêmicos</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={[styles.filterButton, activeFilter === 'social' && styles.activeFilter]}
+            onPress={() => handleFilterChange('social')}>
+            <Text style={styles.filterText}>Social</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={[styles.filterButton, activeFilter === 'tecnologico' && styles.activeFilter]}
+            onPress={() => handleFilterChange('tecnologico')}>
+            <Text style={styles.filterText}>Tecnológicos</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={[styles.filterButton, activeFilter === 'outros' && styles.activeFilter]}
+            onPress={() => handleFilterChange('outros')}>
+            <Text style={styles.filterText}>Outros</Text>
+          </TouchableOpacity>
+        </View>
+      </View>
+
+      {/* Lista de itens do portfólio */}
       <FlatList
-        ListHeaderComponent={
-          <View>
-            <Text style={styles.heading}>Serviços</Text>
-            <View style={styles.filters}>
-              <TouchableOpacity
-                style={[styles.filterButton, activeFilter === 'all' && styles.activeFilter]}
-                onPress={() => handleFilterChange('all')}>
-                <Text style={styles.filterText}>Todos</Text>
-              </TouchableOpacity>
-              <TouchableOpacity
-                style={[styles.filterButton, activeFilter === 'facial' && styles.activeFilter]}
-                onPress={() => handleFilterChange('facial')}>
-                <Text style={styles.filterText}>Faciais</Text>
-              </TouchableOpacity>
-              <TouchableOpacity
-                style={[styles.filterButton, activeFilter === 'corporal' && styles.activeFilter]}
-                onPress={() => handleFilterChange('corporal')}>
-                <Text style={styles.filterText}>Corporais</Text>
-              </TouchableOpacity>
-              <TouchableOpacity
-                style={[styles.filterButton, activeFilter === 'outros' && styles.activeFilter]}
-                onPress={() => handleFilterChange('outros')}>
-                <Text style={styles.filterText}>Outros</Text>
-              </TouchableOpacity>
-            </View>
-          </View>
-        }
         data={filteredItems}
-        renderItem={({ item }) => (
-          <View style={styles.portfolioItem}>
-            <Image source={item.imgSrc} style={styles.image} />
-            <View style={styles.content}>
-              <Text style={styles.title}>{item.title}</Text>
-              <TouchableOpacity
-                style={styles.viewButton}
-                onPress={() => openDescriptionModal(item.description)}>
-                <Text style={styles.viewButtonText}>Informações do Serviço</Text>
-              </TouchableOpacity>
-            </View>
-          </View>
+        renderItem={({ item, index }) => (
+          <Animatable.View animation="fadeInUp" delay={index * 100} style={styles.portfolioItem}>
+            <LinearGradient
+              colors={['#4B0082', '#111827']}
+              start={{ x: 0, y: 0 }}
+              end={{ x: 1, y: 1 }}
+              style={styles.cardGradient}>
+              <Image source={item.imgSrc} style={styles.image} />
+              <View style={styles.itemContent}>
+                <Text style={styles.itemTitle}>{item.title}</Text>
+                <TouchableOpacity
+                  style={styles.infoButton}
+                  onPress={() => openDescriptionModal(item.description)}>
+                  <Text style={styles.infoButtonText}>Informações do Serviço</Text>
+                </TouchableOpacity>
+              </View>
+            </LinearGradient>
+          </Animatable.View>
         )}
         keyExtractor={(item) => item.id}
-        numColumns={1}
+        contentContainerStyle={styles.listContainer}
       />
 
+      {/* Modal para exibir a descrição */}
       <Modal
         visible={isModalVisible}
         transparent={true}
@@ -190,21 +303,23 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#111827',
-    paddingHorizontal: 16,
     paddingTop: 40,
+    paddingHorizontal: 16,
+  },
+  header: {
+    marginBottom: 20,
   },
   heading: {
     fontSize: 28,
     fontWeight: 'bold',
     color: '#00CC6A',
     textAlign: 'center',
-    marginBottom: 20,
+    marginBottom: 10,
   },
   filters: {
     flexDirection: 'row',
     flexWrap: 'wrap',
     justifyContent: 'center',
-    marginBottom: 20,
   },
   filterButton: {
     margin: 5,
@@ -221,37 +336,45 @@ const styles = StyleSheet.create({
     fontWeight: '600',
     fontSize: 14,
   },
+  listContainer: {
+    paddingBottom: 30,
+  },
   portfolioItem: {
     marginBottom: 20,
-    backgroundColor: '#1F2937',
-    borderRadius: 10,
+    borderRadius: 15,
     overflow: 'hidden',
+    elevation: 5,
+  },
+  cardGradient: {
+    borderRadius: 15,
   },
   image: {
     width: '100%',
     height: 180,
   },
-  content: {
-    padding: 12,
+  itemContent: {
     backgroundColor: '#111827',
+    padding: 12,
+    alignItems: 'center',
   },
-  title: {
+  itemTitle: {
     color: '#51B2D4',
     fontSize: 18,
     fontWeight: 'bold',
     marginBottom: 8,
     textAlign: 'center',
   },
-  viewButton: {
+  infoButton: {
     backgroundColor: '#00CC6A',
     paddingVertical: 10,
+    paddingHorizontal: 16,
     borderRadius: 8,
   },
-  viewButtonText: {
+  infoButtonText: {
     color: '#111827',
-    textAlign: 'center',
-    fontWeight: 'bold',
     fontSize: 14,
+    fontWeight: 'bold',
+    textAlign: 'center',
   },
   modalContentWrapper: {
     flex: 1,
