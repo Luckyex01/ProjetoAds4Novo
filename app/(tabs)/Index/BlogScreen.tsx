@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   View,
   Text,
@@ -8,7 +8,6 @@ import {
   FlatList,
   Linking,
   Dimensions,
-  ScrollView,
 } from 'react-native';
 import Animated, {
   FadeInUp,
@@ -19,6 +18,7 @@ import Animated, {
   Easing,
 } from 'react-native-reanimated';
 import Carousel from 'react-native-reanimated-carousel';
+// @ts-ignore
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { LinearGradient } from 'expo-linear-gradient';
 
@@ -149,8 +149,10 @@ const blogPosts: BlogPost[] = [
 const BlogScreen: React.FC = () => {
   const [likes, setLikes] = useState<{ [key: string]: number }>({});
   const translateY = useSharedValue(0);
+  const scaleVal = useSharedValue(1);
 
-  React.useEffect(() => {
+  useEffect(() => {
+    // Animação para o efeito de sobe e desce da seta
     translateY.value = withRepeat(
       withTiming(-10, {
         duration: 1000,
@@ -159,10 +161,22 @@ const BlogScreen: React.FC = () => {
       -1,
       true
     );
+    // Animação de pulso na seta
+    scaleVal.value = withRepeat(
+      withTiming(1.1, {
+        duration: 800,
+        easing: Easing.inOut(Easing.ease),
+      }),
+      -1,
+      true
+    );
   }, []);
 
   const arrowStyle = useAnimatedStyle(() => ({
-    transform: [{ translateY: translateY.value }],
+    transform: [
+      { translateY: translateY.value },
+      { scale: scaleVal.value },
+    ],
   }));
 
   const featuredPosts = blogPosts.filter((post) => post.isFeatured);
@@ -208,45 +222,44 @@ const BlogScreen: React.FC = () => {
   );
 
   return (
-    <ScrollView style={styles.container}>
-      <FlatList
-        ListHeaderComponent={
-          <>
-            <Text style={styles.heading}>Notícias e Artigos</Text>
-            <Carousel
-              width={width}
-              height={250}
-              autoPlay
-              data={featuredPosts}
-              scrollAnimationDuration={1000}
-              renderItem={({ item }) => (
-                <TouchableOpacity
-                  onPress={() => Linking.openURL(item.link)}
-                  style={styles.carouselItem}
-                >
-                  <Image source={{ uri: item.image }} style={styles.carouselImage} />
-                  <View style={styles.carouselContent}>
-                    <Text style={styles.carouselTitle}>{item.title}</Text>
-                    <Text style={styles.carouselMeta}>
-                      {item.author} - {item.date}
-                    </Text>
-                  </View>
-                </TouchableOpacity>
-              )}
-            />
-            <Animated.View style={[styles.arrowContainer, arrowStyle]}>
-              <Icon name="chevron-down" size={128} color="#800080" />
-            </Animated.View>
-            <View style={{ height: 20 }} />
-          </>
-        }
-        data={blogPosts}
-        renderItem={renderItem}
-        keyExtractor={(item) => item.id}
-        showsVerticalScrollIndicator={false}
-        contentContainerStyle={styles.list}
-      />
-    </ScrollView>
+    <FlatList
+      style={styles.container}
+      data={blogPosts}
+      renderItem={renderItem}
+      keyExtractor={(item) => item.id}
+      showsVerticalScrollIndicator={false}
+      ListHeaderComponent={
+        <>
+          <Text style={styles.heading}>Notícias e Artigos</Text>
+          <Carousel
+            width={width}
+            height={250}
+            autoPlay
+            data={featuredPosts}
+            scrollAnimationDuration={1000}
+            renderItem={({ item }) => (
+              <TouchableOpacity
+                onPress={() => Linking.openURL(item.link)}
+                style={styles.carouselItem}
+              >
+                <Image source={{ uri: item.image }} style={styles.carouselImage} />
+                <View style={styles.carouselContent}>
+                  <Text style={styles.carouselTitle}>{item.title}</Text>
+                  <Text style={styles.carouselMeta}>
+                    {item.author} - {item.date}
+                  </Text>
+                </View>
+              </TouchableOpacity>
+            )}
+          />
+          <Animated.View style={[styles.arrowContainer, arrowStyle]}>
+            <Icon name="chevron-down" size={100} color="#00CC6A" />
+          </Animated.View>
+          <View style={{ height: 20 }} />
+        </>
+      }
+      contentContainerStyle={styles.list}
+    />
   );
 };
 
@@ -350,10 +363,6 @@ const styles = StyleSheet.create({
   arrowContainer: {
     alignItems: 'center',
     marginTop: 10,
-  },
-  arrow: {
-    fontSize: 64,
-    color: '#800080',
   },
 });
 

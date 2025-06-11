@@ -12,6 +12,7 @@ import {
   Animated,
 } from "react-native";
 import * as Animatable from "react-native-animatable";
+// @ts-ignore
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 
 const GRADIENT_COLORS = ["#00CC6A", "#4B0082"];
@@ -21,9 +22,9 @@ const ContactScreen = () => {
   const [email, setEmail] = useState("");
   const [assunto, setAssunto] = useState("");
   const [mensagem, setMensagem] = useState("");
-  const [focusedInput, setFocusedInput] = useState(null);
+  const [focusedInput, setFocusedInput] = useState<null | "nome" | "email" | "assunto" | "mensagem">(null);
   const fadeAnim = useRef(new Animated.Value(0)).current;
-  const formRef = useRef(null);
+  const formRef = useRef<Animatable.View & { shake?: (duration?: number) => void }>(null);
 
   // Animação de interpolação de cor para o título
   React.useEffect(() => {
@@ -67,7 +68,7 @@ const ContactScreen = () => {
   const handleSend = () => {
     if (!nome || !email || !assunto || !mensagem) {
       if (formRef.current) {
-        formRef.current.shake(800);
+        formRef.current?.shake?.(800);
       }
       alert("Preencha todos os campos!");
       return;

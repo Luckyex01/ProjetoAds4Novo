@@ -5,19 +5,15 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { Ionicons } from '@expo/vector-icons';
 import { Pressable } from 'react-native';
 import { useColorScheme } from '@/hooks/useColorScheme';
-import { Colors } from '@/constants/Colors';
 import LoginScreen from './Login';
 import AlterarSenhaScreen from './AlterarSenha';
 import RedefinirSenhaScreen from './RedefinirSenha';
-
 import RegistroUserScreen from './RegistroUser';
 import CadastroAtendimento from './CadastroAtendimento';
 import GerenciamentoUser from '../GerenciamentoUser';
 import GerenciamentoAgendamento from '../GerenciamentoAgendamento';
 import GerenciamentoServico from '../GerenciamentoServico';
 import Relatorio from '../Relatorio';
-
-
 // Telas
 import HomeScreen from './index';
 import AboutScreen from './Index/AboutScreen';
@@ -28,13 +24,10 @@ import BlogScreen from './Index/BlogScreen';
 import ContactScreen from './Index/ContactScreen';
 import { RouteProp } from '@react-navigation/native';
 
-
-
-
-
 // Criando os navegadores
 const DrawerNavigator = createDrawerNavigator();
 const TabNavigator = createBottomTabNavigator();
+
 type IconName =
   | 'home'
   | 'information'
@@ -43,27 +36,32 @@ type IconName =
   | 'people'
   | 'file-tray'
   | 'call';
-// Função para configurar as Tabs
+
+// Função para configurar as Tabs com as cores e estilo atualizados
 function Tabs() {
   return (
     <TabNavigator.Navigator
       initialRouteName="Home"
       screenOptions={({ route }: { route: RouteProp<any, any> }) => ({
+        tabBarActiveTintColor: "#00CC6A", // Item ativo: Neon verde
+        tabBarInactiveTintColor: "#FFFFFF", // Inativo: Branco
+        tabBarStyle: { backgroundColor: "#141E30" }, // Fundo escuro
+        headerStyle: { backgroundColor: "#141E30" },
+        headerTintColor: "#FFFFFF",
         tabBarIcon: ({ color, size }: { color: string; size: number }) => {
-          let iconName: IconName; // Agora tipado corretamente
-
+          let iconName: IconName;
           switch (route.name) {
-            case 'Home':
-              iconName = 'home';
-              break;
             case 'Sobre nos':
               iconName = 'information';
               break;
-            case 'Nossos serviços':
+            case 'Serviços':
               iconName = 'construct';
               break;
             case 'Portfolio':
               iconName = 'briefcase';
+              break;
+            case 'Home':
+              iconName = 'home';
               break;
             case 'Depoimentos':
               iconName = 'people';
@@ -71,40 +69,38 @@ function Tabs() {
             case 'Noticias sobre nossos serviços':
               iconName = 'file-tray';
               break;
-            case 'Contate -me':
+            case 'Contato':
               iconName = 'call';
               break;
             default:
               iconName = 'home';
           }
-
           return <Ionicons name={iconName} size={size} color={color} />;
         },
       })}
     >
-      <TabNavigator.Screen name="Home" component={HomeScreen} />
+      {/* A ordem dos screens foi alterada para que "Home" apareça no meio */}
       <TabNavigator.Screen name="Sobre nos" component={AboutScreen} />
-      <TabNavigator.Screen name="Nossos serviços" component={ServiceScreen} />
+      <TabNavigator.Screen name="Serviços" component={ServiceScreen} />
       <TabNavigator.Screen name="Portfolio" component={PortfolioScreen} />
+      <TabNavigator.Screen name="Home" component={HomeScreen} />
       <TabNavigator.Screen name="Depoimentos" component={TestimonialScreen} />
       <TabNavigator.Screen name="Noticias sobre nossos serviços" component={BlogScreen} />
-      <TabNavigator.Screen name="Contate -me" component={ContactScreen} />
+      <TabNavigator.Screen name="Contato" component={ContactScreen} />
     </TabNavigator.Navigator>
   );
 }
-
-
 
 export default function DrawerLayout() {
   const colorScheme = useColorScheme();
   const [userType, setUserType] = useState<string | null>(null); // Estado do tipo de usuário
   const [loading, setLoading] = useState(true); // Estado para controle de carregamento
 
-  // Função para obter o tipo de usuário do AsyncStorage
+  // Obtém o tipo de usuário do AsyncStorage
   useEffect(() => {
     AsyncStorage.getItem('userType')
       .then((userTypeStored) => {
-        console.log('userTypeStored:', userTypeStored); // Verifique o valor de userType
+        console.log('userTypeStored:', userTypeStored);
         setUserType(userTypeStored);
         setLoading(false);
       })
@@ -114,87 +110,95 @@ export default function DrawerLayout() {
       });
   }, []);
 
-  // Exibe um carregamento até que o tipo de usuário seja obtido
   if (loading) {
-    return null; // Ou renderize um componente de carregamento (ex. um spinner)
+    return null; // Aqui você pode renderizar um spinner se desejar
   }
 
-  // Função para limpar os dados do AsyncStorage
+  // Função para realizar o logout: limpa os dados armazenados e atualiza o estado
   const handleLogout = async () => {
-    await AsyncStorage.removeItem('userId'); // Remove o userId
-    await AsyncStorage.removeItem('userName'); // Remove o userName
-    await AsyncStorage.removeItem('userType'); // Remove o userType
-    setUserType(null); // Limpa o estado local do userType
+    await AsyncStorage.removeItem('userId');
+    await AsyncStorage.removeItem('userName');
+    await AsyncStorage.removeItem('userType');
+    setUserType(null);
   };
 
   return (
     <DrawerNavigator.Navigator
       screenOptions={({ navigation }) => ({
-        drawerActiveTintColor: Colors[colorScheme ?? 'light'].tint,
+        drawerActiveTintColor: "#00CC6A",
+        drawerInactiveTintColor: "#FFFFFF",
+        drawerStyle: {
+          backgroundColor: "#141E30",
+        },
+        headerStyle: { backgroundColor: "#141E30" },
+        headerTintColor: "#FFFFFF",
         headerLeft: () => (
           <Pressable
             onPress={() => {
-              // Verifica o userType no AsyncStorage quando o botão do menu é pressionado
               AsyncStorage.getItem('userType')
                 .then((userTypeStored) => {
-                  console.log('userTypeStored:', userTypeStored); // Verifique o valor de userType
-                  setUserType(userTypeStored); // Atualiza o estado com o valor do userType
-                  setLoading(false); // Define o estado de loading como false
-                  navigation.toggleDrawer(); // Abre ou fecha o drawer
+                  console.log('userTypeStored:', userTypeStored);
+                  setUserType(userTypeStored);
+                  setLoading(false);
+                  navigation.toggleDrawer();
                 })
                 .catch((error) => {
                   console.error('Erro ao obter userType:', error);
-                  setLoading(false); // Em caso de erro, ainda define o loading como false
+                  setLoading(false);
                 });
             }}
             style={{ marginLeft: 15 }}
           >
-            <Ionicons name="menu" size={28} color={Colors[colorScheme ?? 'light'].tint} />
+            <Ionicons name="menu" size={28} color="#00CC6A" />
           </Pressable>
         ),
       })}
     >
-
-      {/* Tela de Home que conterá o TabNavigator */}
       <DrawerNavigator.Screen
         name="Home"
         options={{
           title: 'Inicio',
-          drawerIcon: ({ color }: { color: string }) => <Ionicons name="home-outline" size={28} color={color} />,
+          drawerIcon: ({ color }: { color: string }) => (
+            <Ionicons name="home-outline" size={28} color={color} />
+          ),
         }}
-        component={Tabs} // Aqui você usa o TabNavigator diretamente
+        component={Tabs}
       />
-      
+
       {userType !== '0' && userType !== '1' && (
         <>
           <DrawerNavigator.Screen
             name="Login"
             options={{
               title: 'Login',
-              drawerIcon: ({ color }: { color: string }) => <Ionicons name="log-in-outline" size={28} color={color} />,
+              drawerIcon: ({ color }: { color: string }) => (
+                <Ionicons name="log-in-outline" size={28} color={color} />
+              ),
             }}
             component={LoginScreen}
           />
-
           <DrawerNavigator.Screen
             name="RegistroUser"
             options={{
               title: 'Cadastro de Usuário',
-              drawerIcon: ({ color }: { color: string }) => <Ionicons name="person-add-outline" size={28} color={color} />,
+              drawerIcon: ({ color }: { color: string }) => (
+                <Ionicons name="person-add-outline" size={28} color={color} />
+              ),
             }}
-            component={RegistroUserScreen} 
+            component={RegistroUserScreen}
           />
+        </>
+      )}
 
-      </>
-)}
-      {/* Condicional para gerenciar as telas, com base no tipo de usuário */}
       {userType === '0' && (
         <>
           <DrawerNavigator.Screen
             name="GerenciamentoUser"
             options={{
               title: 'Gerenciamento de Usuarios',
-              drawerIcon: ({ color }: { color: string }) => <Ionicons name="people" size={28} color={color} />,
+              drawerIcon: ({ color }: { color: string }) => (
+                <Ionicons name="people" size={28} color={color} />
+              ),
             }}
             component={GerenciamentoUser}
           />
@@ -202,7 +206,9 @@ export default function DrawerLayout() {
             name="GerenciamentoAgendamento"
             options={{
               title: 'Gerenciamento de Agendamento',
-              drawerIcon: ({ color }: { color: string }) => <Ionicons name="calendar-outline" size={28} color={color} />,
+              drawerIcon: ({ color }: { color: string }) => (
+                <Ionicons name="calendar-outline" size={28} color={color} />
+              ),
             }}
             component={GerenciamentoAgendamento}
           />
@@ -210,7 +216,9 @@ export default function DrawerLayout() {
             name="GerenciamentoServico"
             options={{
               title: 'Gerenciamento de Serviço',
-              drawerIcon: ({ color }: { color: string }) => <Ionicons name="construct-outline" size={28} color={color} />,
+              drawerIcon: ({ color }: { color: string }) => (
+                <Ionicons name="construct-outline" size={28} color={color} />
+              ),
             }}
             component={GerenciamentoServico}
           />
@@ -218,52 +226,60 @@ export default function DrawerLayout() {
             name="Reletorio"
             options={{
               title: 'Relatorio',
-              drawerIcon: ({ color }: { color: string }) => <Ionicons name="construct-outline" size={28} color={color} />,
+              drawerIcon: ({ color }: { color: string }) => (
+                <Ionicons name="construct-outline" size={28} color={color} />
+              ),
             }}
             component={Relatorio}
           />
-        <DrawerNavigator.Screen
-          name="AlterarSenha"
-          options={{
-            title: 'Alterar Senha',
-            drawerIcon: ({ color }: { color: string }) => <Ionicons name="key-outline" size={28} color={color} />,
-          }}
-          component={AlterarSenhaScreen} 
-       />
-
-      <DrawerNavigator.Screen
-        name="RedefinirSenha"
-        options={{
-          title: 'Redefinir Senha',
-          drawerIcon: ({ color }: { color: string }) => <Ionicons name="lock-open-outline" size={28} color={color} />,
-        }}
-        component={RedefinirSenhaScreen} 
-      />
+          <DrawerNavigator.Screen
+            name="AlterarSenha"
+            options={{
+              title: 'Alterar Senha',
+              drawerIcon: ({ color }: { color: string }) => (
+                <Ionicons name="key-outline" size={28} color={color} />
+              ),
+            }}
+            component={AlterarSenhaScreen}
+          />
+          <DrawerNavigator.Screen
+            name="RedefinirSenha"
+            options={{
+              title: 'Redefinir Senha',
+              drawerIcon: ({ color }: { color: string }) => (
+                <Ionicons name="lock-open-outline" size={28} color={color} />
+              ),
+            }}
+            component={RedefinirSenhaScreen}
+          />
           <DrawerNavigator.Screen
             name="Sair"
             options={{
               title: 'Sair',
-              drawerIcon: ({ color }: { color: string }) => <Ionicons name="log-out-outline" size={28} color={color} />,
+              drawerIcon: ({ color }: { color: string }) => (
+                <Ionicons name="log-out-outline" size={28} color={color} />
+              ),
             }}
             listeners={{
               focus: () => {
-                console.log('userType:', userType); // Verifique o estado antes de realizar a ação
-                handleLogout(); // Limpa os dados de usuário do AsyncStorage
+                console.log('userType:', userType);
+                handleLogout();
               },
             }}
-            component={() => null} // Componente vazio, já que você não quer mudar de tela
+            component={() => null}
           />
         </>
       )}
-      
+
       {userType === '1' && (
         <>
-          
           <DrawerNavigator.Screen
             name="GerenciamentoAgendamento"
             options={{
               title: 'Gerenciamento de Agendamento',
-              drawerIcon: ({ color }: { color: string }) => <Ionicons name="calendar-outline" size={28} color={color} />,
+              drawerIcon: ({ color }: { color: string }) => (
+                <Ionicons name="calendar-outline" size={28} color={color} />
+              ),
             }}
             component={GerenciamentoAgendamento}
           />
@@ -271,40 +287,47 @@ export default function DrawerLayout() {
             name="CadastroAtendimento"
             options={{
               title: 'Cadastro do Atendimento',
-              drawerIcon: ({ color }: { color: string }) => <Ionicons name="person-add-outline" size={28} color={color} />,
+              drawerIcon: ({ color }: { color: string }) => (
+                <Ionicons name="person-add-outline" size={28} color={color} />
+              ),
             }}
-            component={CadastroAtendimento} // Substitua pelo componente correto, caso tenha outro
+            component={CadastroAtendimento}
           />
-                <DrawerNavigator.Screen
-        name="AlterarSenha"
-        options={{
-          title: 'Alterar Senha',
-          drawerIcon: ({ color }: { color: string }) => <Ionicons name="key-outline" size={28} color={color} />,
-        }}
-        component={AlterarSenhaScreen} 
-      />
-
-      <DrawerNavigator.Screen
-        name="RedefinirSenha"
-        options={{
-          title: 'Redefinir Senha',
-          drawerIcon: ({ color }: { color: string }) => <Ionicons name="lock-open-outline" size={28} color={color} />,
-        }}
-        component={RedefinirSenhaScreen} 
-      />
+          <DrawerNavigator.Screen
+            name="AlterarSenha"
+            options={{
+              title: 'Alterar Senha',
+              drawerIcon: ({ color }: { color: string }) => (
+                <Ionicons name="key-outline" size={28} color={color} />
+              ),
+            }}
+            component={AlterarSenhaScreen}
+          />
+          <DrawerNavigator.Screen
+            name="RedefinirSenha"
+            options={{
+              title: 'Redefinir Senha',
+              drawerIcon: ({ color }: { color: string }) => (
+                <Ionicons name="lock-open-outline" size={28} color={color} />
+              ),
+            }}
+            component={RedefinirSenhaScreen}
+          />
           <DrawerNavigator.Screen
             name="Sair"
             options={{
               title: 'Sair',
-              drawerIcon: ({ color }: { color: string }) => <Ionicons name="log-out-outline" size={28} color={color} />,
+              drawerIcon: ({ color }: { color: string }) => (
+                <Ionicons name="log-out-outline" size={28} color={color} />
+              ),
             }}
             listeners={{
               focus: () => {
-                console.log('userType:', userType); // Verifique o estado antes de realizar a ação
-                handleLogout(); // Limpa os dados de usuário do AsyncStorage
+                console.log('userType:', userType);
+                handleLogout();
               },
             }}
-            component={() => null} // Componente vazio, já que você não quer mudar de tela
+            component={() => null}
           />
         </>
       )}

@@ -1,20 +1,25 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   View,
   Text,
   StyleSheet,
-  TouchableOpacity,
+  Image,
   ScrollView,
-  Animated,
+  TouchableOpacity,
   Dimensions,
 } from 'react-native';
-import { FontAwesome } from '@expo/vector-icons';
-import type { FC } from 'react';
+import Animated, {
+  useSharedValue,
+  useAnimatedStyle,
+  withSpring,
+} from 'react-native-reanimated';
 import * as Animatable from 'react-native-animatable';
 import { LinearGradient } from 'expo-linear-gradient';
+import { FontAwesome } from '@expo/vector-icons';
+import { useNavigation } from '@react-navigation/native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const { width } = Dimensions.get('window');
-const AnimatedIcon = Animated.createAnimatedComponent(FontAwesome);
 
 type Service = {
   icon: string;
@@ -104,7 +109,6 @@ const services: Service[] = [
     requiresBooking: true,
     actionLabel: 'Agendar',
   },
-  // Serviços adicionais que demonstram a versatilidade do aplicativo
   {
     icon: 'user',
     title: 'Gestão de Usuários e Cadastro',
@@ -139,17 +143,16 @@ const services: Service[] = [
   },
 ];
 
-const ServicesScreen: FC = () => {
+const ServicesScreen: React.FC = () => {
   return (
     <ScrollView style={styles.container}>
-      {/* Cabeçalho com título e uma breve tagline */}
+      {/* Cabeçalho com título e tagline */}
       <View style={styles.heading}>
         <Text style={styles.title}>Nossos Serviços</Text>
         <Text style={styles.subtitle}>
           Uma solução multifuncional para todas as necessidades empresariais.
         </Text>
       </View>
-
       <View style={styles.serviceContainer}>
         {services.map((service, index) => (
           <Animatable.View
@@ -165,30 +168,45 @@ const ServicesScreen: FC = () => {
   );
 };
 
-type ServiceItemProps = Service;
+interface ServiceItemProps extends Service {}
 
-const ServiceItem: FC<ServiceItemProps> = ({
+const ServiceItem: React.FC<ServiceItemProps> = ({
   icon,
   title,
   description,
   requiresBooking,
   actionLabel,
 }) => {
-  // Animação de escala para o ícone ao toque
-  const scaleAnim = React.useRef(new Animated.Value(1)).current;
+  const navigation = useNavigation<any>();
+  const scaleAnim = useSharedValue(1);
+
+  const animatedStyle = useAnimatedStyle(() => {
+    return {
+      transform: [{ scale: scaleAnim.value }],
+    };
+  });
 
   const onPressIn = () => {
-    Animated.spring(scaleAnim, {
-      toValue: 1.1,
-      useNativeDriver: true,
-    }).start();
+    scaleAnim.value = withSpring(1.1, { damping: 10, stiffness: 100 });
   };
 
   const onPressOut = () => {
-    Animated.spring(scaleAnim, {
-      toValue: 1,
-      useNativeDriver: true,
-    }).start();
+    scaleAnim.value = withSpring(1, { damping: 10, stiffness: 100 });
+  };
+
+  const handleAction = async () => {
+    try {
+      const userId = await AsyncStorage.getItem('userId');
+      if (!userId) {
+        // Se não estiver logado, redireciona para a tela de Registro
+        navigation.navigate('RegistroUser');
+      } else {
+        // Ação normal – implemente a navegação para agendamento ou outra tela
+        console.log('Usuário logado. Ação realizada:', actionLabel);
+      }
+    } catch (error) {
+      console.error('Erro ao verificar login:', error);
+    }
   };
 
   return (
@@ -198,18 +216,19 @@ const ServiceItem: FC<ServiceItemProps> = ({
       end={{ x: 1, y: 1 }}
       style={styles.serviceItem}
     >
-      <AnimatedIcon
-        name={icon as any}
-        size={40}
-        color="#00CC6A"
-        style={[styles.icon, { transform: [{ scale: scaleAnim }] }]}
-        onPressIn={onPressIn}
-        onPressOut={onPressOut}
-      />
+      <Animated.View style={animatedStyle}>
+        <FontAwesome
+          name={icon as any}
+          size={40}
+          color="#00CC6A"
+          onPressIn={onPressIn}
+          onPressOut={onPressOut}
+        />
+      </Animated.View>
       <Text style={styles.serviceTitle}>{title}</Text>
       <Text style={styles.serviceDescription}>{description}</Text>
       {actionLabel && (
-        <TouchableOpacity style={styles.button}>
+        <TouchableOpacity style={styles.button} onPress={handleAction}>
           {requiresBooking ? (
             <FontAwesome
               name="calendar"
@@ -267,9 +286,6 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 2, height: 2 },
     shadowRadius: 5,
     elevation: 5,
-  },
-  icon: {
-    marginBottom: 10,
   },
   serviceTitle: {
     fontSize: 20,

@@ -6,9 +6,19 @@ import {
   Image,
   Pressable,
   Animated,
-  Platform
+  Platform,
+  KeyboardAvoidingView,
+  TouchableWithoutFeedback,
+  Keyboard,
+  Modal,
+  ScrollView,
 } from 'react-native';
-import { TextInput, Button, Text, Snackbar, HelperText } from 'react-native-paper';
+import {
+  TextInput,
+  Button,
+  Text,
+  Snackbar,
+} from 'react-native-paper';
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useNavigation } from '@react-navigation/native';
@@ -31,12 +41,13 @@ function LoginScreen() {
   const [visibleSnackbar, setVisibleSnackbar] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   
+  // Estado para o modal "Esqueceu a senha"
+  const [forgotModalVisible, setForgotModalVisible] = useState(false);
+
   const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
   
-  // Valor animado para a escala da logo
   const logoScale = useRef(new Animated.Value(1)).current;
-  
-  // Efeito bounce na logo para ambiente web
+
   const handleLogoHoverIn = () => {
     Animated.spring(logoScale, {
       toValue: 1.2,
@@ -45,7 +56,7 @@ function LoginScreen() {
       bounciness: 10,
     }).start();
   };
-  
+
   const handleLogoHoverOut = () => {
     Animated.spring(logoScale, {
       toValue: 1,
@@ -54,8 +65,7 @@ function LoginScreen() {
       bounciness: 10,
     }).start();
   };
-  
-  // Verifica se o usuário já está logado
+
   useEffect(() => {
     const checkUser = async () => {
       try {
@@ -69,7 +79,7 @@ function LoginScreen() {
     };
     checkUser();
   }, []);
-  
+
   const handleLogin = async () => {
     if (!email || !senha) {
       Alert.alert('Erro', 'Por favor, preencha todos os campos!');
@@ -97,88 +107,125 @@ function LoginScreen() {
       setLoading(false);
     }
   };
-  
+
   return (
     <LinearGradient colors={['#141E30', '#243B55']} style={styles.gradientBackground}>
-      <View style={styles.container}>
-        {/* Header animado com logo e marca */}
-        <Animatable.View animation="fadeInDown" duration={800} style={styles.header}>
-          <Pressable
-            {...(Platform.OS === 'web'
-              ? { onMouseEnter: handleLogoHoverIn, onMouseLeave: handleLogoHoverOut }
-              : {})}
-          >
-            <Animated.View style={[styles.imageWrapper, { transform: [{ scale: logoScale }] }]}>
-              <Image source={require('../../assets/images/logoLuckyFly.png')} style={styles.image} />
-            </Animated.View>
-          </Pressable>
-          <Text style={styles.brand}>LuckyApps</Text>
-        </Animatable.View>
-  
-        {/* Título e Subtítulo */}
-        <Animatable.Text animation="fadeInUp" delay={200} style={styles.title}>
-          Login
-        </Animatable.Text>
-        <Animatable.Text animation="fadeInUp" delay={300} style={styles.subtitle}>
-          Bem-vindo de volta! Insira suas credenciais para acessar o futuro dos serviços.
-        </Animatable.Text>
-  
-        {/* Card do formulário com gradiente neon na borda */}
-        <View style={styles.formWrapper}>
-          <LinearGradient colors={['#00CC6A', '#4B0082']} style={styles.formGradient}>
-            <View style={styles.formContainer}>
-              <TextInput
-                label="E-mail"
-                value={email}
-                onChangeText={setEmail}
-                autoCapitalize="none"
-                keyboardType="email-address"
-                left={<TextInput.Icon icon="email" />}
-                mode="outlined"
-                style={styles.input}
-                outlineColor="#00CC6A"
-                activeOutlineColor="#00CC6A"
-              />
-              <TextInput
-                label="Senha"
-                value={senha}
-                onChangeText={setSenha}
-                secureTextEntry={!showPassword}
-                left={<TextInput.Icon icon="lock" />}
-                right={<TextInput.Icon icon={showPassword ? 'eye-off' : 'eye'} onPress={() => setShowPassword(prev => !prev)} />}
-                mode="outlined"
-                style={styles.input}
-                outlineColor="#00CC6A"
-                activeOutlineColor="#00CC6A"
-              />
-              <Button
-                mode="contained"
-                onPress={handleLogin}
-                loading={loading}
-                disabled={loading}
-                style={styles.button}
-                contentStyle={styles.buttonContent}
+      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+        <KeyboardAvoidingView
+          behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+          style={{ flex: 1 }}
+          keyboardVerticalOffset={Platform.OS === 'ios' ? 60 : 0}
+        >
+          <View style={styles.container}>
+            <Animatable.View animation="fadeInDown" duration={800} style={styles.header}>
+              <Pressable
+                {...(Platform.OS === 'web'
+                  ? { onMouseEnter: handleLogoHoverIn, onMouseLeave: handleLogoHoverOut }
+                  : {})}
               >
-                Entrar
-              </Button>
-              <Snackbar
-                visible={visibleSnackbar}
-                onDismiss={() => setVisibleSnackbar(false)}
-                duration={Snackbar.DURATION_SHORT}
-              >
-                Login bem-sucedido!
-              </Snackbar>
-              <Pressable onPress={() => navigation.navigate('RegistroUser')}>
-                <Text style={styles.link}>Criar uma conta</Text>
+                <Animated.View style={[styles.imageWrapper, { transform: [{ scale: logoScale }] }]}>
+                  <Image
+                    source={require('../../assets/images/logoLuckyFly.png')}
+                    style={styles.image}
+                  />
+                </Animated.View>
               </Pressable>
+              <Text style={styles.brand}>LuckyApps</Text>
+            </Animatable.View>
+
+            <Animatable.Text animation="fadeInUp" delay={200} style={styles.title}>
+              Login
+            </Animatable.Text>
+            <Animatable.Text animation="fadeInUp" delay={300} style={styles.subtitle}>
+              Bem-vindo de volta! Insira suas credenciais para acessar o futuro dos serviços.
+            </Animatable.Text>
+
+            <View style={styles.formWrapper}>
+              <LinearGradient colors={['#00CC6A', '#4B0082']} style={styles.formGradient}>
+                <View style={styles.formContainer}>
+                  <TextInput
+                    label="E-mail"
+                    value={email}
+                    onChangeText={setEmail}
+                    autoCapitalize="none"
+                    keyboardType="email-address"
+                    left={<TextInput.Icon icon="email" />}
+                    mode="outlined"
+                    style={styles.input}
+                    outlineColor="#00CC6A"
+                    activeOutlineColor="#00CC6A"
+                  />
+                  <TextInput
+                    label="Senha"
+                    value={senha}
+                    onChangeText={setSenha}
+                    secureTextEntry={!showPassword}
+                    left={<TextInput.Icon icon="lock" />}
+                    right={
+                      <TextInput.Icon
+                        icon={showPassword ? 'eye-off' : 'eye'}
+                        onPress={() => setShowPassword(prev => !prev)}
+                      />
+                    }
+                    mode="outlined"
+                    style={styles.input}
+                    outlineColor="#00CC6A"
+                    activeOutlineColor="#00CC6A"
+                  />
+                  
+                  {/* Link para "Esqueceu a senha?" */}
+                  <Pressable onPress={() => setForgotModalVisible(true)}>
+                    <Text style={styles.forgotLink}>Esqueceu a senha?</Text>
+                  </Pressable>
+
+                  <Button
+                    mode="contained"
+                    onPress={handleLogin}
+                    loading={loading}
+                    disabled={loading}
+                    style={styles.button}
+                    contentStyle={styles.buttonContent}
+                  >
+                    Entrar
+                  </Button>
+                  <Snackbar
+                    visible={visibleSnackbar}
+                    onDismiss={() => setVisibleSnackbar(false)}
+                    duration={Snackbar.DURATION_SHORT}
+                  >
+                    Login bem-sucedido!
+                  </Snackbar>
+                  <Pressable onPress={() => navigation.navigate('RegistroUser')}>
+                    <Text style={styles.link}>Criar uma conta</Text>
+                  </Pressable>
+                </View>
+              </LinearGradient>
             </View>
-          </LinearGradient>
+          </View>
+        </KeyboardAvoidingView>
+      </TouchableWithoutFeedback>
+
+      {/* Modal para recuperação de senha */}
+      <Modal visible={forgotModalVisible} transparent animationType="slide">
+        <View style={styles.modalContainer}>
+          <View style={styles.modalContent}>
+            <ScrollView contentContainerStyle={styles.modalScroll}>
+              <Text style={styles.modalTitle}>Recuperar Senha</Text>
+              <Text style={styles.modalText}>
+                Para recuperar sua senha, envie um e-mail para suporte@luckyapps.com
+                informando seu e-mail cadastrado e seguiremos com o processo de recuperação.
+              </Text>
+            </ScrollView>
+            <Button mode="contained" onPress={() => setForgotModalVisible(false)} style={styles.modalCloseButton}>
+              Fechar
+            </Button>
+          </View>
         </View>
-      </View>
+      </Modal>
     </LinearGradient>
   );
 }
-  
+
 const styles = StyleSheet.create({
   gradientBackground: {
     flex: 1,
@@ -265,7 +312,48 @@ const styles = StyleSheet.create({
     color: '#00CC6A',
     fontWeight: 'bold',
     fontSize: 16,
+    textDecorationLine: 'underline',
+  },
+  forgotLink: {
+    marginTop: 10,
+    textAlign: 'right',
+    color: '#00CC6A',
+    fontSize: 14,
+    textDecorationLine: 'underline',
+  },
+  modalContainer: {
+    flex: 1,
+    backgroundColor: 'rgba(0,0,0,0.9)',
+    justifyContent:'center',
+    paddingHorizontal: 20,
+  },
+  modalContent: {
+    backgroundColor: '#1F2937',
+    borderRadius: 12,
+    padding: 20,
+    maxHeight: '80%',
+  },
+  modalScroll: {
+    paddingBottom: 20,
+  },
+  modalTitle: {
+    fontSize: 22,
+    fontWeight: 'bold',
+    color: '#00CC6A',
+    marginBottom: 16,
+    textAlign: 'center',
+  },
+  modalText: {
+    fontSize: 14,
+    color: '#E5E7EB',
+    lineHeight: 22,
+    textAlign: 'justify',
+  },
+  modalCloseButton: {
+    backgroundColor: '#00CC6A',
+    marginTop: 10,
+    borderRadius: 8,
   },
 });
-  
+
 export default LoginScreen;
