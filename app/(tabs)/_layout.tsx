@@ -41,7 +41,7 @@ type IconName =
 function Tabs() {
   return (
     <TabNavigator.Navigator
-      initialRouteName="Home"
+      initialRouteName="Inicio"
       screenOptions={({ route }: { route: RouteProp<any, any> }) => ({
         tabBarActiveTintColor: "#00CC6A", // Item ativo: Neon verde
         tabBarInactiveTintColor: "#FFFFFF", // Inativo: Branco
@@ -60,7 +60,7 @@ function Tabs() {
             case 'Portfolio':
               iconName = 'briefcase';
               break;
-            case 'Home':
+            case 'Inicio':
               iconName = 'home';
               break;
             case 'Depoimentos':
@@ -83,7 +83,7 @@ function Tabs() {
       <TabNavigator.Screen name="Sobre nos" component={AboutScreen} />
       <TabNavigator.Screen name="Serviços" component={ServiceScreen} />
       <TabNavigator.Screen name="Portfolio" component={PortfolioScreen} />
-      <TabNavigator.Screen name="Home" component={HomeScreen} />
+      <TabNavigator.Screen name="Inicio" component={HomeScreen} />
       <TabNavigator.Screen name="Depoimentos" component={TestimonialScreen} />
       <TabNavigator.Screen name="Noticias sobre nossos serviços" component={BlogScreen} />
       <TabNavigator.Screen name="Contato" component={ContactScreen} />
@@ -157,7 +157,7 @@ export default function DrawerLayout() {
       <DrawerNavigator.Screen
         name="Home"
         options={{
-          title: 'Inicio',
+          title: 'Menu',
           drawerIcon: ({ color }: { color: string }) => (
             <Ionicons name="home-outline" size={28} color={color} />
           ),

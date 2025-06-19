@@ -79,7 +79,7 @@ const GerenciamentoUser = () => {
       <SafeAreaView style={styles.container}>
         {/* Adicionando a imagem acima do botão */}
         <Image 
-          source={require('../assets/images/Elysium.png')} 
+          source={require('../assets/images/logoLuckyFly.png')} 
           style={styles.image} 
         />        
         <Button
@@ -281,55 +281,57 @@ const GerenciamentoUser = () => {
   );
 };
 
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 16,
-    backgroundColor: '#D2B48C', // Cor marrom claro
+    padding: 20,
+    backgroundColor: '#111827', // Fundo escuro para um visual futurista
   },
-  
   image: {
-    width: 100, // Define a largura da imagem
-    height: 100, // Define a altura da imagem, igual à largura
-    resizeMode: 'cover', // Ajusta a imagem para cobrir o container
-    marginBottom: 20, // Espaçamento entre a imagem e o botão
-    borderRadius: 50, // Aplica bordas arredondadas (50% de 100px)
-    alignSelf: 'center', // Centraliza a imagem horizontalmente
+    width: 120, // Aumentada para melhor destaque
+    height: 120,
+    resizeMode: 'cover',
+    marginBottom: 20,
+    borderRadius: 60, // Bordas totalmente arredondadas
+    alignSelf: 'center',
+    borderWidth: 2,
+    borderColor: '#00CC6A', // Acento verde vibrante
   },
   dataTable: {
     minWidth: 600,
   },
-  // ... outros estilos
   verticalScroll: {
-    maxHeight: 400, // Ajuste o valor conforme necessário para o tamanho da sua tela
+    maxHeight: 400, // Ajuste conforme necessário
   },
   scrollContainer: {
     flexDirection: 'row',
     maxWidth: '100%',
   },
-   modal: {
-    backgroundColor: 'white',
+  modal: {
+    backgroundColor: '#1F2937', // Fundo escuro para modais
     padding: 20,
-    borderRadius: 10,
-    width: '80%',
-    maxHeight: '70%',
+    borderRadius: 12,
+    width: '85%',
+    maxHeight: '75%',
     alignSelf: 'center',
   },
   modalHeader: {
-    backgroundColor: '#D2B48C', // Marrom claro
+    backgroundColor: '#00CC6A', // Cabeçalho com acento verde vibrante
     alignItems: 'center',
-    paddingVertical: 10,
-    borderTopLeftRadius: 10,
-    borderTopRightRadius: 10,
-    marginBottom: 10,
+    paddingVertical: 12,
+    borderTopLeftRadius: 12,
+    borderTopRightRadius: 12,
+    marginBottom: 12,
   },
   modalTitle: {
-    fontSize: 18,
+    fontSize: 20,
     fontWeight: 'bold',
-    color: 'white', // Cor do texto no cabeçalho
+    color: '#FFFFFF', // Texto branco para contraste
   },
   modalContent: {
     marginBottom: 20,
+    alignItems: 'center',
   },
   gridContainer: {
     flexDirection: 'column',
@@ -340,24 +342,25 @@ const styles = StyleSheet.create({
   },
   modalText: {
     fontSize: 14,
-    color: '#555',
+    color: '#FFFFFF', // Cinza claro para contraste suave
     marginBottom: 15,
+    textAlign: 'center',
   },
   bold: {
     fontWeight: 'bold',
   },
   modalFooter: {
-    backgroundColor: '#D2B48C', // Marrom claro
+    backgroundColor: '#00CC6A', // Rodapé com a mesma cor do cabeçalho
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
-    paddingVertical: 10,
-    borderBottomLeftRadius: 10,
-    borderBottomRightRadius: 10,
+    paddingVertical: 12,
+    borderBottomLeftRadius: 12,
+    borderBottomRightRadius: 12,
     marginTop: 10,
   },
   deleteButton: {
-    backgroundColor: '#e74c3c',  // Cor vermelha para o botão de deletar
+    backgroundColor: '#e74c3c', // Vermelho para ação de exclusão
     width: '100%',
   },
   buttonContainer: {
@@ -365,21 +368,29 @@ const styles = StyleSheet.create({
     marginTop: 10,
   },
   columnHeader: {
-    width: 200, // Aumente conforme necessário
+    width: 200, // Largura fixa para evitar cortes
     borderRightWidth: 1,
-    borderRightColor: '#ccc',
+    borderRightColor: '#374151',
     justifyContent: 'center',
     alignItems: 'center',
+    padding: 8,
+  },
+  columnHeaderText: {
+    color: '#FFFFFF', // Cabeçalho em branco
+    fontWeight: 'bold',
+    fontSize: 14,
   },
   columnCell: {
-    width: 200, // Deve ser o mesmo valor do cabeçalho
+    width: 200, // Mesma largura do cabeçalho
     borderRightWidth: 1,
-    borderRightColor: '#ccc',
+    borderRightColor: '#374151',
     justifyContent: 'center',
     alignItems: 'center',
-  },   
-  columnHeaderText: {
-    color: 'white', // Cor do texto do cabeçalho
+    padding: 8,
+  },
+  cellText: {
+    color: '#FFFFFF', // Texto branco para as células
+    fontSize: 14,
   },
 });
 

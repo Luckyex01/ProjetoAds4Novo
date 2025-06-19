@@ -167,7 +167,7 @@ const GerenciamentoAgendamento = () => {
       <SafeAreaView style={styles.container}>
         {/* Adicionando a imagem acima do botão */}
                 <Image 
-                  source={require('../assets/images/Elysium.png')} 
+                  source={require('../assets/images/logoLuckyFly.png')} 
                   style={styles.image} 
                 />
         <Button
@@ -371,102 +371,187 @@ const GerenciamentoAgendamento = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 16,
-    backgroundColor: '#D2B48C', // Cor marrom claro
-  },
-  
-  image: {
-    width: 100, // Define a largura da imagem
-    height: 100, // Define a altura da imagem, igual à largura
-    resizeMode: 'cover', // Ajusta a imagem para cobrir o container
-    marginBottom: 20, // Espaçamento entre a imagem e o botão
-    borderRadius: 50, // Aplica bordas arredondadas (50% de 100px)
-    alignSelf: 'center', // Centraliza a imagem horizontalmente
-  },
-  dataTable: {
-    minWidth: 600,
-  },
-  // ... outros estilos
-  verticalScroll: {
-    maxHeight: 400, // Ajuste o valor conforme necessário para o tamanho da sua tela
-  },
-  scrollContainer: {
-    flexDirection: 'row',
-    maxWidth: '100%',
-  },
-   modal: {
-    backgroundColor: 'white',
     padding: 20,
+    backgroundColor: '#111827', // Fundo escuro para um look futurista
+  },
+  image: {
+    width: 120,
+    height: 120,
+    resizeMode: 'cover',
+    marginBottom: 20,
+    borderRadius: 60,
+    alignSelf: 'center',
+    borderWidth: 2,
+    borderColor: '#00CC6A', // Acento verde
+  },
+  serviceContainer: {
+    paddingBottom: 40,
+  },
+  heading: {
+    alignItems: 'center',
+    marginBottom: 24,
+    paddingHorizontal: 12,
+  },
+  headingTitle: {
+    fontSize: 32,
+    fontWeight: 'bold',
+    color: '#00CC6A', // Verde de destaque
+  },
+  headingSubtitle: {
+    fontSize: 18,
+    color: '#9CA3AF',
+    marginTop: 8,
+    textAlign: 'center',
+  },
+  cardWrapper: {
+    marginBottom: 24,
+  },
+  serviceItem: {
+    borderRadius: 15,
+    padding: 24,
+    marginHorizontal: 12,
+    alignItems: 'center',
+    backgroundColor: 'transparent',
+    shadowColor: '#000',
+    shadowOpacity: 0.45,
+    shadowOffset: { width: 2, height: 2 },
+    shadowRadius: 6,
+    elevation: 6,
+  },
+  serviceTitle: {
+    fontSize: 22,
+    fontWeight: 'bold',
+    color: '#00CC6A',
+    marginVertical: 10,
+    textAlign: 'center',
+  },
+  serviceDescription: {
+    fontSize: 18,
+    color: '#9CA3AF',
+    textAlign: 'center',
+  },
+  button: {
+    flexDirection: 'row',
+    backgroundColor: '#00CC6A',
+    paddingVertical: 12,
+    paddingHorizontal: 32,
     borderRadius: 10,
-    width: '80%',
-    maxHeight: '70%',
+    alignSelf: 'center',
+    marginTop: 12,
+  },
+  buttonText: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    color: '#FFFFFF',
+  },
+  modalContainer: {
+    flex: 1,
+    backgroundColor: '#111827',
+  },
+  modalBackButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    padding: 14,
+    backgroundColor: '#374151',
+  },
+  modalBackText: {
+    fontSize: 18,
+    color: 'white',
+    marginLeft: 12,
+  },
+  modalContentWrapper: {
+    flex: 1,
+    padding: 24,
+    backgroundColor: '#1F2937',
+  },
+  modal: {
+    backgroundColor: '#1F2937',
+    padding: 24,
+    borderRadius: 12,
+    width: '85%',
+    maxHeight: '75%',
     alignSelf: 'center',
   },
   modalHeader: {
-    backgroundColor: '#D2B48C', // Marrom claro
+    backgroundColor: '#00CC6A',
     alignItems: 'center',
-    paddingVertical: 10,
-    borderTopLeftRadius: 10,
-    borderTopRightRadius: 10,
-    marginBottom: 10,
-  },
-  modalTitle: {
-    fontSize: 18,
-    fontWeight: 'bold',
-    color: 'white', // Cor do texto no cabeçalho
-  },
-  modalContent: {
-    marginBottom: 20,
-  },
-  gridContainer: {
-    flexDirection: 'column',
-    marginBottom: 15,
-  },
-  gridItem: {
+    paddingVertical: 14,
+    borderTopLeftRadius: 12,
+    borderTopRightRadius: 12,
     marginBottom: 12,
   },
-  modalText: {
-    fontSize: 14,
-    color: '#555',
-    marginBottom: 15,
-  },
-  bold: {
+  modalTitle: {
+    fontSize: 20,
     fontWeight: 'bold',
+    color: '#FFFFFF',
+  },
+  modalContent: {
+    flex: 1,
+    marginBottom: 24,
   },
   modalFooter: {
-    backgroundColor: '#D2B48C', // Marrom claro
+    backgroundColor: '#00CC6A',
     flexDirection: 'row',
-    justifyContent: 'center',
+    justifyContent: 'space-around',
     alignItems: 'center',
-    paddingVertical: 10,
-    borderBottomLeftRadius: 10,
-    borderBottomRightRadius: 10,
-    marginTop: 10,
+    paddingVertical: 14,
+    borderBottomLeftRadius: 12,
+    borderBottomRightRadius: 12,
+    marginTop: 12,
   },
   deleteButton: {
-    backgroundColor: '#e74c3c',  // Cor vermelha para o botão de deletar
+    backgroundColor: '#e74c3c',
     width: '100%',
   },
   buttonContainer: {
     width: '100%',
-    marginTop: 10,
+    marginTop: 12,
+  },
+  verticalScroll: {
+    maxHeight: 420,
+  },
+  scrollContainer: {
+    flexDirection: 'row',
+    width: '100%',
+  },
+  dataTable: {
+    minWidth: 600,
   },
   columnHeader: {
-    width: 200, // Aumente conforme necessário
+    width: 220,
     borderRightWidth: 1,
-    borderRightColor: '#ccc',
+    borderRightColor: '#374151',
     justifyContent: 'center',
     alignItems: 'center',
+    padding: 8,
   },
   columnCell: {
-    width: 200, // Deve ser o mesmo valor do cabeçalho
+    width: 220,
     borderRightWidth: 1,
-    borderRightColor: '#ccc',
+    borderRightColor: '#374151',
     justifyContent: 'center',
     alignItems: 'center',
-  },   
+    padding: 8,
+  },
   columnHeaderText: {
-    color: 'white', // Cor do texto do cabeçalho
+    color: '#FFFFFF',
+    fontWeight: 'bold',
+    fontSize: 16,
+  },
+  modalText: {
+    fontSize: 16,
+    color: '#E5E7EB',
+    marginBottom: 16,
+  },
+  bold: {
+    fontWeight: 'bold',
+  },
+  gridContainer: {
+    flexDirection: 'column',
+    marginBottom: 18,
+  },
+  gridItem: {
+    marginBottom: 14,
   },
 });
 

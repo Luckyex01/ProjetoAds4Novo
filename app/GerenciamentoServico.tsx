@@ -78,7 +78,7 @@ const GerenciamentoServico = () => {
     <PaperProvider>
       <SafeAreaView style={styles.container}>
         <Image 
-          source={require('../assets/images/Elysium.png')} 
+          source={require('../assets/images/logoLuckyFly.png')} 
           style={styles.image} 
         />        
         <Button
@@ -235,63 +235,72 @@ const GerenciamentoServico = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 16,
-    backgroundColor: '#D2B48C', // Cor marrom claro
+    padding: 20,
+    backgroundColor: '#111827', // Fundo escuro para um visual futurista
   },
   image: {
-    width: 100, // Define a largura da imagem
-    height: 100, // Define a altura da imagem, igual à largura
-    resizeMode: 'cover', // Ajusta a imagem para cobrir o container
-    marginBottom: 20, // Espaçamento entre a imagem e o botão
-    borderRadius: 50, // Aplica bordas arredondadas (50% de 100px)
-    alignSelf: 'center', // Centraliza a imagem horizontalmente
+    width: 120, // Aumentada a largura para destacar melhor a imagem
+    height: 120, // Altura igual à largura para manter formato quadrado
+    resizeMode: 'cover',
+    marginBottom: 24,
+    borderRadius: 60, // Bordas totalmente arredondadas
+    alignSelf: 'center',
+    borderWidth: 2,
+    borderColor: '#00CC6A', // Acento verde vibrante
   },
   columnHeader: {
     borderRightWidth: 1,
-    borderRightColor: '#ccc',
+    borderRightColor: '#374151',
     justifyContent: 'center',
     alignItems: 'center',
+    padding: 6,
   },
   columnHeaderText: {
     fontWeight: 'bold',
+    color: '#FFFFFF', // Texto branco para chamar a atenção
+    fontSize: 14, // Tamanho ajustado para evitar cortes
   },
   columnCell: {
     borderRightWidth: 1,
-    borderRightColor: '#ccc',
+    borderRightColor: '#374151',
     justifyContent: 'center',
     alignItems: 'center',
     height: 50,
+    padding: 6,
   },
   modal: {
-    backgroundColor: 'white',
+    backgroundColor: '#1F2937', // Fundo escuro para os modais
     padding: 20,
     margin: 20,
-    borderRadius: 10,
+    borderRadius: 12,
   },
   modalContent: {
     alignItems: 'center',
   },
   modalHeader: {
     width: '100%',
-    backgroundColor: '#D2B48C', // Marrom claro
-    paddingVertical: 10,
-    borderTopLeftRadius: 10,
-    borderTopRightRadius: 10,
+    backgroundColor: '#00CC6A', // Cabeçalho com acento verde para destacar
+    paddingVertical: 12,
+    borderTopLeftRadius: 12,
+    borderTopRightRadius: 12,
     alignItems: 'center',
+    marginBottom: 12,
   },
   modalTitle: {
-    fontSize: 18,
+    fontSize: 20,
     fontWeight: 'bold',
-    color: 'white', // Texto branco para contraste
+    color: '#FFFFFF',
   },
   modalText: {
-    marginVertical: 15,
+    marginVertical: 16,
     textAlign: 'center',
+    fontSize: 16,
+    color: '#E5E7EB', // Cinza claro para contraste suave
   },
   gridContainer: {
     width: '100%',
+    marginTop: 12,
     gap: 10,
-    marginTop: 10,
   },
   gridItem: {
     width: '100%',
@@ -299,14 +308,14 @@ const styles = StyleSheet.create({
   modalFooter: {
     marginTop: 20,
     width: '100%',
-    backgroundColor: '#D2B48C', // Mudando para branco
-    paddingVertical: 10,
-    borderBottomLeftRadius: 10,
-    borderBottomRightRadius: 10,
+    backgroundColor: '#00CC6A', // Rodapé com a mesma cor do cabeçalho
+    paddingVertical: 12,
+    borderBottomLeftRadius: 12,
+    borderBottomRightRadius: 12,
     alignItems: 'center',
   },
   deleteButton: {
-    backgroundColor: 'red',
+    backgroundColor: '#e74c3c', // Vermelho para ação de exclusão
   },
   bold: {
     fontWeight: 'bold',

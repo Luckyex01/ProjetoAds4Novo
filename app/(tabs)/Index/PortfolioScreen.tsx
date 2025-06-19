@@ -27,9 +27,7 @@ type FilterType =
 const Portfolio = () => {
   const [activeFilter, setActiveFilter] = useState<FilterType>('all');
   const [isModalVisible, setIsModalVisible] = useState(false);
-  const [selectedDescription, setSelectedDescription] = useState<string | null>(
-    null
-  );
+  const [selectedDescription, setSelectedDescription] = useState<string | null>(null);
 
   const handleFilterChange = (filter: FilterType) => {
     setActiveFilter(filter);
@@ -45,7 +43,7 @@ const Portfolio = () => {
     setSelectedDescription(null);
   };
 
-  // Array de itens do portfolio com novas categorias e imagens placeholder (substitua conforme necessário)
+  // Array de itens do portfolio com novas categorias e imagens atualizadas
   const portfolioItems = [
     {
       id: '1',
@@ -73,8 +71,7 @@ const Portfolio = () => {
       imgSrc: require('../../../assets/images/p4.png'),
       category: 'corporal',
       title: 'Podologia',
-      description:
-        'Tratamento de calos, unhas encravadas, reflexologia podal.',
+      description: 'Tratamento de calos, unhas encravadas, reflexologia podal.',
     },
     {
       id: '5',
@@ -85,7 +82,7 @@ const Portfolio = () => {
     },
     {
       id: '6',
-      imgSrc: require('../../../assets/images/p6.png'),
+      imgSrc: require('../../../assets/images/ConsultaMedica.png'),
       category: 'outros',
       title: 'Consulta Médica Online',
       description:
@@ -93,7 +90,7 @@ const Portfolio = () => {
     },
     {
       id: '7',
-      imgSrc: require('../../../assets/images/p1.png'),
+      imgSrc: require('../../../assets/images/ExamesLaborais.png'),
       category: 'outros',
       title: 'Exames Laboratoriais',
       description:
@@ -101,39 +98,35 @@ const Portfolio = () => {
     },
     {
       id: '8',
-      imgSrc: require('../../../assets/images/p2.png'),
+      imgSrc: require('../../../assets/images/PersonalTrainer.png'),
       category: 'outros',
       title: 'Personal Trainer',
       description: 'Acompanhamento personalizado para treinos e dietas.',
     },
     {
       id: '9',
-      imgSrc: require('../../../assets/images/p3.png'),
+      imgSrc: require('../../../assets/images/BabaeCuidador.png'),
       category: 'outros',
       title: 'Babá e Cuidador',
       description: 'Profissionais treinados para cuidar de crianças e idosos.',
     },
     {
       id: '10',
-      // Reposicionando de "outros" para "automotivo"
-      imgSrc: require('../../../assets/images/p4.png'),
+      imgSrc: require('../../../assets/images/ServicosAutomotivos.png'),
       category: 'automotivo',
       title: 'Serviços Automotivos',
-      description:
-        'Troca de óleo, revisão geral e lavagem especializada.',
+      description: 'Troca de óleo, revisão geral e lavagem especializada.',
     },
     {
       id: '11',
-      imgSrc: require('../../../assets/images/p5.png'),
+      imgSrc: require('../../../assets/images/ReparosResidenciais.png'),
       category: 'outros',
       title: 'Reparos Residenciais',
-      description:
-        'Serviços de encanamento, elétrica e pequenos reparos.',
+      description: 'Serviços de encanamento, elétrica e pequenos reparos.',
     },
-    // Novos itens para categorias adicionais:
     {
       id: '12',
-      imgSrc: { uri: 'https://via.placeholder.com/300x200?text=Automotivo+2' },
+      imgSrc: require('../../../assets/images/RevisaoAutomotiva.png'),
       category: 'automotivo',
       title: 'Revisão e Manutenção Automotiva',
       description:
@@ -141,14 +134,14 @@ const Portfolio = () => {
     },
     {
       id: '13',
-      imgSrc: { uri: 'https://via.placeholder.com/300x200?text=Aulas+Particulares' },
+      imgSrc: require('../../../assets/images/AulasParticulares.png'),
       category: 'academico',
       title: 'Aulas Particulares',
       description: 'Aulas de matemática, física, química e outras disciplinas.',
     },
     {
       id: '14',
-      imgSrc: { uri: 'https://via.placeholder.com/300x200?text=Cursos+Online' },
+      imgSrc: require('../../../assets/images/CursosOnline.png'),
       category: 'academico',
       title: 'Cursos Online',
       description:
@@ -156,7 +149,7 @@ const Portfolio = () => {
     },
     {
       id: '15',
-      imgSrc: { uri: 'https://via.placeholder.com/300x200?text=Social+Media+Management' },
+      imgSrc: { uri: 'https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?ixlib=rb-1.2.1&auto=format&fit=crop&w=300&q=80' },
       category: 'social',
       title: 'Social Media Management',
       description:
@@ -164,7 +157,7 @@ const Portfolio = () => {
     },
     {
       id: '16',
-      imgSrc: { uri: 'https://via.placeholder.com/300x200?text=Marketing+de+Influencia' },
+      imgSrc: { uri: 'https://images.unsplash.com/photo-1515378791036-0648a3ef77b2?ixlib=rb-1.2.1&auto=format&fit=crop&w=300&q=80' },
       category: 'social',
       title: 'Marketing de Influência',
       description:
@@ -172,7 +165,7 @@ const Portfolio = () => {
     },
     {
       id: '17',
-      imgSrc: { uri: 'https://via.placeholder.com/300x200?text=Suporte+T%C3%A9cnico+TI' },
+      imgSrc: require('../../../assets/images/SuporteTecnico.png'),
       category: 'tecnologico',
       title: 'Suporte Técnico de TI',
       description:
@@ -180,7 +173,7 @@ const Portfolio = () => {
     },
     {
       id: '18',
-      imgSrc: { uri: 'https://via.placeholder.com/300x200?text=Desenvolvimento+Software' },
+      imgSrc: { uri: 'https://images.unsplash.com/photo-1518770660439-4636190af475?ixlib=rb-1.2.1&auto=format&fit=crop&w=300&q=80' },
       category: 'tecnologico',
       title: 'Desenvolvimento de Software',
       description:
@@ -188,7 +181,7 @@ const Portfolio = () => {
     },
     {
       id: '19',
-      imgSrc: { uri: 'https://via.placeholder.com/300x200?text=Botox+Preenchimento' },
+      imgSrc: { uri: 'https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?ixlib=rb-1.2.1&auto=format&fit=crop&w=300&q=80' },
       category: 'facial',
       title: 'Tratamento Facial: Botox & Preenchimento',
       description:
@@ -196,7 +189,6 @@ const Portfolio = () => {
     },
   ];
 
-  // Filtrar itens com base no filtro ativo
   const filteredItems = portfolioItems.filter(
     (item) => activeFilter === 'all' || item.category === activeFilter
   );
@@ -209,42 +201,50 @@ const Portfolio = () => {
         <View style={styles.filters}>
           <TouchableOpacity
             style={[styles.filterButton, activeFilter === 'all' && styles.activeFilter]}
-            onPress={() => handleFilterChange('all')}>
+            onPress={() => handleFilterChange('all')}
+          >
             <Text style={styles.filterText}>Todos</Text>
           </TouchableOpacity>
           <TouchableOpacity
             style={[styles.filterButton, activeFilter === 'facial' && styles.activeFilter]}
-            onPress={() => handleFilterChange('facial')}>
+            onPress={() => handleFilterChange('facial')}
+          >
             <Text style={styles.filterText}>Faciais</Text>
           </TouchableOpacity>
           <TouchableOpacity
             style={[styles.filterButton, activeFilter === 'corporal' && styles.activeFilter]}
-            onPress={() => handleFilterChange('corporal')}>
+            onPress={() => handleFilterChange('corporal')}
+          >
             <Text style={styles.filterText}>Corporais</Text>
           </TouchableOpacity>
           <TouchableOpacity
             style={[styles.filterButton, activeFilter === 'automotivo' && styles.activeFilter]}
-            onPress={() => handleFilterChange('automotivo')}>
+            onPress={() => handleFilterChange('automotivo')}
+          >
             <Text style={styles.filterText}>Automotivos</Text>
           </TouchableOpacity>
           <TouchableOpacity
             style={[styles.filterButton, activeFilter === 'academico' && styles.activeFilter]}
-            onPress={() => handleFilterChange('academico')}>
+            onPress={() => handleFilterChange('academico')}
+          >
             <Text style={styles.filterText}>Acadêmicos</Text>
           </TouchableOpacity>
           <TouchableOpacity
             style={[styles.filterButton, activeFilter === 'social' && styles.activeFilter]}
-            onPress={() => handleFilterChange('social')}>
+            onPress={() => handleFilterChange('social')}
+          >
             <Text style={styles.filterText}>Social</Text>
           </TouchableOpacity>
           <TouchableOpacity
             style={[styles.filterButton, activeFilter === 'tecnologico' && styles.activeFilter]}
-            onPress={() => handleFilterChange('tecnologico')}>
+            onPress={() => handleFilterChange('tecnologico')}
+          >
             <Text style={styles.filterText}>Tecnológicos</Text>
           </TouchableOpacity>
           <TouchableOpacity
             style={[styles.filterButton, activeFilter === 'outros' && styles.activeFilter]}
-            onPress={() => handleFilterChange('outros')}>
+            onPress={() => handleFilterChange('outros')}
+          >
             <Text style={styles.filterText}>Outros</Text>
           </TouchableOpacity>
         </View>
@@ -259,13 +259,15 @@ const Portfolio = () => {
               colors={['#4B0082', '#111827']}
               start={{ x: 0, y: 0 }}
               end={{ x: 1, y: 1 }}
-              style={styles.cardGradient}>
+              style={styles.cardGradient}
+            >
               <Image source={item.imgSrc} style={styles.image} />
               <View style={styles.itemContent}>
                 <Text style={styles.itemTitle}>{item.title}</Text>
                 <TouchableOpacity
                   style={styles.infoButton}
-                  onPress={() => openDescriptionModal(item.description)}>
+                  onPress={() => openDescriptionModal(item.description)}
+                >
                   <Text style={styles.infoButtonText}>Informações do Serviço</Text>
                 </TouchableOpacity>
               </View>
@@ -281,7 +283,8 @@ const Portfolio = () => {
         visible={isModalVisible}
         transparent={true}
         animationType="fade"
-        onRequestClose={closeDescriptionModal}>
+        onRequestClose={closeDescriptionModal}
+      >
         <BlurView intensity={50} tint="dark" style={StyleSheet.absoluteFill}>
           <View style={styles.modalContentWrapper}>
             <View style={styles.descriptionBox}>
