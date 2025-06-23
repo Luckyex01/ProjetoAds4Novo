@@ -75,7 +75,7 @@ export default function HomeScreen() {
 
       {/* Área de texto animada */}
       <Animated.View style={{ opacity: fadeAnim }}>
-        <Text style={styles.title}>Bem-vindo à LuckyFly!</Text>
+        <Text style={styles.title}>Bem-vindo à LuckyApps!</Text>
         <Text style={styles.subtitle}>
           Nós fornecemos <Text style={styles.typingText}>{typingText}</Text>
         </Text>

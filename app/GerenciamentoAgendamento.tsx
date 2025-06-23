@@ -182,11 +182,11 @@ const GerenciamentoAgendamento = () => {
                   Adicionar Agendamento
                 </Button>
         {/* ScrollView com rolagem horizontal */}
-<ScrollView horizontal style={styles.scrollContainer}>
-  <ScrollView style={styles.verticalScroll}>
-    <DataTable style={styles.dataTable}>
-      <DataTable.Header>
-        <DataTable.Title style={styles.columnHeader}>
+      <ScrollView horizontal style={styles.scrollContainer}>
+        <ScrollView style={styles.verticalScroll}>
+          <DataTable style={styles.dataTable}>
+            <DataTable.Header>
+              <DataTable.Title style={styles.columnHeader}>
            <Text style={styles.columnHeaderText}>Data do Agendamento</Text>
         </DataTable.Title>
         <DataTable.Title style={styles.columnHeader}>
@@ -204,44 +204,49 @@ const GerenciamentoAgendamento = () => {
         <DataTable.Title style={styles.columnHeader}>
           <Text style={styles.columnHeaderText}>Ações</Text>
         </DataTable.Title>
-      </DataTable.Header>
+            </DataTable.Header>
 
-      {agendamentos.length > 0 ? (
-        agendamentos.map(agendamento => (
-          <DataTable.Row key={agendamento.id}>
-            <DataTable.Cell style={styles.columnCell}><Text>{agendamento.dataAtendimento}</Text></DataTable.Cell>
-            <DataTable.Cell style={styles.columnCell}><Text>{agendamento.dthoraAgendamento}</Text></DataTable.Cell>
-            <DataTable.Cell style={styles.columnCell}><Text>{agendamento.horario}</Text></DataTable.Cell>
-            <DataTable.Cell style={styles.columnCell}><Text>{agendamento.tipoServico}</Text></DataTable.Cell>
-<DataTable.Cell style={styles.columnCell}><Text>{agendamento.usuarioNome}</Text></DataTable.Cell>
-
-            <DataTable.Cell style={styles.columnCell}>
-              <IconButton
-                icon="pencil"
-                size={20}
-                onPress={() => {
-                  setCurrentAgendamento(agendamento);
-                  showModal('editAgendamento');
-                }}
-                iconColor="blue"
-              />
-              <IconButton icon="delete" size={20} onPress={() => {
-                  setCurrentAgendamento(agendamento);
-                  showModal('deleteAgendamento');
-                }} 
-                 iconColor="red"
-              />
-            </DataTable.Cell>
-          </DataTable.Row>
-        ))
-      ) : (
-        <DataTable.Row>
-          <DataTable.Cell><Text>Nenhum agendamento encontrado</Text></DataTable.Cell>
-        </DataTable.Row>
-      )}
-    </DataTable>
-  </ScrollView>
-</ScrollView>
+            {agendamentos.length > 0 ? (
+              agendamentos.map((agendamento, index) => (
+                <DataTable.Row
+                  key={agendamento.id}
+                  style={index % 2 === 0 ? styles.zebraRowEven : styles.zebraRowOdd}
+                >
+                  <DataTable.Cell style={styles.columnCell}><Text>{agendamento.dataAtendimento}</Text></DataTable.Cell>
+                  <DataTable.Cell style={styles.columnCell}><Text>{agendamento.dthoraAgendamento}</Text></DataTable.Cell>
+                  <DataTable.Cell style={styles.columnCell}><Text>{agendamento.horario}</Text></DataTable.Cell>
+                  <DataTable.Cell style={styles.columnCell}><Text>{agendamento.tipoServico}</Text></DataTable.Cell>
+                  <DataTable.Cell style={styles.columnCell}><Text>{agendamento.usuarioNome}</Text></DataTable.Cell>
+                  <DataTable.Cell style={styles.columnCell}>
+                    <IconButton
+                      icon="pencil"
+                      size={20}
+                      onPress={() => {
+                        setCurrentAgendamento(agendamento);
+                        showModal('editAgendamento');
+                      }}
+                      iconColor="blue"
+                    />
+                    <IconButton
+                      icon="delete"
+                      size={20}
+                      onPress={() => {
+                        setCurrentAgendamento(agendamento);
+                        showModal('deleteAgendamento');
+                      }}
+                      iconColor="red"
+                    />
+                  </DataTable.Cell>
+                </DataTable.Row>
+              ))
+            ) : (
+              <DataTable.Row>
+                <DataTable.Cell><Text>Nenhum agendamento encontrado</Text></DataTable.Cell>
+              </DataTable.Row>
+            )}
+          </DataTable>
+        </ScrollView>
+      </ScrollView>
 
 
 
@@ -552,6 +557,12 @@ const styles = StyleSheet.create({
   },
   gridItem: {
     marginBottom: 14,
+  },
+  zebraRowEven: {
+    backgroundColor: '#23272f', // Cor para linhas pares
+  },
+  zebraRowOdd: {
+    backgroundColor: '#1F2937', // Cor para linhas ímpares
   },
 });
 
