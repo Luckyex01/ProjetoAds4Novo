@@ -1,14 +1,15 @@
 {
-  "name": "frontreactnative",
+  "name": "projetoads4novo",
   "main": "expo-router/entry",
   "version": "1.0.0",
+  "description": "Projeto Expo / React Native - ProjetoAds4Novo (TypeScript)",
   "scripts": {
     "start": "expo start",
     "reset-project": "node ./scripts/reset-project.js",
     "android": "expo start --android",
     "ios": "expo start --ios",
     "web": "expo start --web",
-    "test": "jest --watchAll",
+    "test": "jest",
     "lint": "expo lint"
   },
   "jest": {
@@ -63,6 +64,26 @@
     "jest-expo": "~52.0.6",
     "react-test-renderer": "18.3.1",
     "typescript": "^5.3.3"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Luckyex01/ProjetoAds4Novo.git"
+  },
+  "keywords": [
+    "expo",
+    "react-native",
+    "typescript",
+    "ads",
+    "projeto"
+  ],
+  "author": "Luckyex01",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Luckyex01/ProjetoAds4Novo/issues"
+  },
+  "homepage": "https://github.com/Luckyex01/ProjetoAds4Novo#readme",
+  "engines": {
+    "node": ">=16"
   },
   "private": true
 }
